@@ -1,3 +1,139 @@
+#include <iostream>
+#include <vector>
+#include <iomanip>
+#include <limits>
+#include <stdexcept>
+#include <string>
+using namespace std;
+int safeInt(const string &prompt = "")
+{
+    int x;
+    while (true)
+    {
+        try
+        {
+            if (!prompt.empty())
+                cout << prompt;
+            cin >> x;
+            if (cin.fail())
+                throw runtime_error("Invalid input! Not an integer.");
+            if (x <= 0)
+                throw runtime_error("Value must be positive!");
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return x;
+        }
+        catch (runtime_error &e)
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << e.what() << " Enter again.\n";
+        }
+    }
+}
+
+float safeFloat(const string &prompt = "")
+{
+    float x;
+    while (true)
+    {
+        try
+        {
+            if (!prompt.empty())
+                cout << prompt;
+            cin >> x;
+            if (cin.fail())
+                throw runtime_error("Invalid input! Not a number.");
+            if (x < 0)
+                throw runtime_error("Value cannot be negative!");
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return x;
+        }
+        catch (runtime_error &e)
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << e.what() << " Enter again.\n";
+        }
+    }
+}
+template <typename T>
+void displayVector(const vector<T> &v)
+{
+    for (const auto &item : v)
+        item.displayInfo();
+}
+class Room
+{
+private:
+    int roomNo;
+    string type;
+    float price;
+    bool isBooked;
+
+public:
+    Room()
+    {
+        roomNo = 0;
+        type = "";
+        price = 0;
+        isBooked = false;
+    }
+    Room(int r, string t, float p)
+    {
+        roomNo = r;
+        type = t;
+        price = p;
+        isBooked = false;
+    }
+
+    int getRoomNo() const
+    {
+        return roomNo;
+    }
+
+    float getPrice() const
+    {
+        return price;
+    }
+
+    bool getStatus() const
+    {
+        return isBooked;
+    }
+
+    void book()
+    {
+        isBooked = true;
+    }
+
+    void free()
+    {
+        isBooked = false;
+    }
+
+    void displayInfo() const
+    {
+        cout << left;
+
+        cout << setw(10) << roomNo;
+        cout << setw(10) << type;
+
+        cout << fixed;
+        cout << setprecision(2);
+        cout << setw(10) << price;
+
+        if (isBooked)
+        {
+            cout << setw(10) << "Booked";
+        }
+        else
+        {
+            cout << setw(10) << "Free";
+        }
+
+        cout << endl;
+    }
+};
 class Person
 {
 protected:
