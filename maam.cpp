@@ -1,3 +1,51 @@
+class AdminBase : public Person
+{
+protected:
+    string username;
+    string password;
+
+public:
+    AdminBase() : Person()
+    {
+        username = "admin";
+        password = "1234";
+    }
+
+    virtual bool login(string u, string p)
+    {
+        if (u == username && p == password)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    void displayInfo() const override
+    {
+        cout << "Admin: " << username << endl;
+    }
+    bool authenticate()
+    {
+        string user, pass;
+        int attempts = 3;
+
+        while (attempts--)
+        {
+            cout << "Enter Username: ";
+            cin >> user;
+            cout << "Enter Password: ";
+            cin >> pass;
+
+            if (login(user, pass))
+                return true;
+            cout << "Wrong credentials! Attempts left: " << attempts << endl;
+        }
+        return false;
+    }
+};
 class Hotel : public AdminBase, public Customer
 {
 private:
